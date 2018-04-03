@@ -115,6 +115,9 @@ class CommunityBaseSettings(Settings):
             'allauth.socialaccount.providers.gitlab',
             'allauth.socialaccount.providers.bitbucket',
             'allauth.socialaccount.providers.bitbucket_oauth2',
+
+            # docsitalia
+            'readthedocs.docsitalia',
         ]
         if ext:
             apps.append('django_countries')
