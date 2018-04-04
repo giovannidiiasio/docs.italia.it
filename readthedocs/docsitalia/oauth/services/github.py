@@ -6,7 +6,7 @@ import json
 from readthedocs.oauth.services.github import GitHubService
 from readthedocs.oauth.models import RemoteOrganization
 
-from ..models import (
+from readthedocs.docsitalia.models import (
     Publisher, validate_publisher_metadata, validate_projects_metadata)
 
 log = logging.getLogger(__name__)
