@@ -25,7 +25,8 @@ class DocsItaliaGithubService(GitHubService):
         # FIXME: error handling
         url = METADATA_BASE_URL.format(
             org=org, repo=repo, settings=settings)
-        return self.paginate(url)
+        response = self.get_session().get(url)
+        return response.text
 
     def sync_organizations(self):
         """Sync organizations from GitHub API."""
