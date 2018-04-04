@@ -21,11 +21,11 @@ def validate_publisher_metadata(org, settings):
 # TODO: do the validation :)
 def validate_projects_metadata(org, settings):
     projects = load_yaml(settings)
-    for project in projects:
-        project['slug'] = slugify(project['name'])
+    for project in projects['projects']:
+        project['slug'] = slugify(project['title'])
         # expand the repository to an url so it's easier to query at
         # Project import time
-        project['repo_url'] = '{}/{}'.format(org.url, project['name'])
+        project['repo_url'] = '{}/{}'.format(org.url, project['title'])
     return projects
 
 
@@ -79,8 +79,8 @@ class Publisher(models.Model):
         for project in settings['projects']:
             proj, created = PublisherProject.objects.get_or_create(
                 publisher=self,
-                name=project['name'],
-                slug=project['slug']
+                name=project['title'],
+                slug=project['slug'],
             )
             proj.metadata = project
             proj.active = True
