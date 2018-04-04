@@ -111,25 +111,24 @@ class DocsItaliaGithubService(GitHubService):
         :param fields: dictionary response of data from API
         :rtype: Publisher
         """
-        # TODO: is this the right one?
-        name = fields.get('name')
+        login = fields.get('login')
         try:
             publisher = Publisher.objects.get(
-                name=name,
+                slug=login,
                 active=True)
         except Publisher.DoesNotExist:
             return None
 
         try:
             organization = RemoteOrganization.objects.get(
-                slug=fields.get('login'),
+                slug=login,
                 users=self.user,
                 account=self.account,
             )
         except RemoteOrganization.DoesNotExist:
             # TODO: fun fact: slug is not unique
             organization = RemoteOrganization.objects.create(
-                slug=fields.get('login'),
+                slug=login,
                 account=self.account,
             )
             organization.users.add(self.user)
@@ -137,7 +136,7 @@ class DocsItaliaGithubService(GitHubService):
         publisher.organizations.add(organization)
 
         organization.url = fields.get('html_url')
-        organization.name = name
+        organization.name = fields.get('name')
         organization.email = fields.get('email')
         organization.avatar_url = fields.get('avatar_url')
         if not organization.avatar_url:
