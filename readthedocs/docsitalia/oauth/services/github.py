@@ -40,7 +40,7 @@ class DocsItaliaGithubService(GitHubService):
                     continue
 
                 publisher = Publisher.objects.get(
-                    organizations=org_obj, active=True)
+                    remote_organization=org_obj, active=True)
                 publisher_settings = self.get_metadata_for_organization(
                     org=org_obj.slug,
                     repo=publisher.config_repo_name,
@@ -133,7 +133,7 @@ class DocsItaliaGithubService(GitHubService):
             )
             organization.users.add(self.user)
 
-        publisher.organizations.add(organization)
+        publisher.remote_organization.add(organization)
 
         organization.url = fields.get('html_url')
         organization.name = fields.get('name')
