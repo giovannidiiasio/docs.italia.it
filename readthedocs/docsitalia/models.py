@@ -66,7 +66,8 @@ class Publisher(models.Model):
 
     # the same publisher may have projects in multiple platforms
     remote_organization = models.ManyToManyField(RemoteOrganization,
-                                                 verbose_name=_('Remote organization'))
+                                                 verbose_name=_('Remote organization'),
+                                                 blank=True)
 
     active = models.BooleanField(_('Active'), default=False)
 
