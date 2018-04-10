@@ -96,8 +96,14 @@ class DocsItaliaGithubService(GitHubService):
                 org_repos = self.paginate(
                     '{org_url}/repos'.format(org_url=org['url'])
                 )
-
+                repo_whitelist = set()
+                for project in projects_metadata['projects']:
+                    for document in project['documents']:
+                        repo_whitelist.add(document['repository'])
                 for repo in org_repos:
+                    # create repo only for whitelisted repositories
+                    if repo['name'] not in repo_whitelist:
+                        continue
                     self.create_repository(repo, organization=org_obj)
         except (TypeError, ValueError) as e:
             log.error('Error syncing GitHub organizations: %s',
