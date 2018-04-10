@@ -82,9 +82,7 @@ class Publisher(models.Model):
                 name=project['title'],
                 slug=project['slug'],
             )
-            proj.metadata = {
-                'documents': ['{}/{}'.format(org.url, p['repository']) for p in project['documents']]
-            }
+            proj.metadata = project
             proj.active = True
             proj.save()
 
