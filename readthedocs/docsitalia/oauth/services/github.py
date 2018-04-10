@@ -89,7 +89,7 @@ class DocsItaliaGithubService(GitHubService):
                 publisher.metadata = publisher_metadata
                 publisher.projects_metadata = projects_metadata
                 publisher.save()
-                publisher.create_projects_from_metadata(projects_metadata)
+                publisher.create_projects_from_metadata(org_obj, projects_metadata)
 
                 # Add repos
                 # TODO ?per_page=100

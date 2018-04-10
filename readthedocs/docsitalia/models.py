@@ -74,7 +74,7 @@ class Publisher(models.Model):
     def __str__(self):
         return self.name
 
-    def create_projects_from_metadata(self, settings):
+    def create_projects_from_metadata(self, org, settings):
         slugs = []
         for project in settings['projects']:
             proj, created = PublisherProject.objects.get_or_create(
@@ -82,7 +82,9 @@ class Publisher(models.Model):
                 name=project['title'],
                 slug=project['slug'],
             )
-            proj.metadata = project
+            proj.metadata = {
+                'documents': ['{}/{}'.format(org.url, p['repository']) for p in project['documents']]
+            }
             proj.active = True
             proj.save()
 
