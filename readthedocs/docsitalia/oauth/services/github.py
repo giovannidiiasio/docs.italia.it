@@ -140,7 +140,8 @@ class DocsItaliaGithubService(GitHubService):
             )
             organization.users.add(self.user)
 
-        publisher.remote_organization.add(organization)
+        publisher.remote_organization = organization
+        publisher.save()
 
         organization.url = fields.get('html_url')
         organization.name = fields.get('name')

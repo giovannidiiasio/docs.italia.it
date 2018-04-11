@@ -64,10 +64,11 @@ class Publisher(models.Model):
                                         max_length=255,
                                         default=u'docs-italia-conf')
 
-    # the same publisher may have projects in multiple platforms
-    remote_organization = models.ManyToManyField(RemoteOrganization,
-                                                 verbose_name=_('Remote organization'),
-                                                 blank=True)
+    # the remote organization where we can find the configuration repository
+    remote_organization = models.ForeignKey(RemoteOrganization,
+                                            verbose_name=_('Remote organization'),
+                                            null=True,
+                                            blank=True)
 
     active = models.BooleanField(_('Active'), default=False)
 
