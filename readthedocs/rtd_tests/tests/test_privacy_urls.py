@@ -28,11 +28,24 @@ class URLAccessMixin(object):
     context_data = []
     default_status_code = 200
 
+    def get_response_data_url_ctx(self):
+        return {}
+
     def login(self):
         raise NotImplementedError
 
     def is_admin(self):
         raise NotImplementedError
+
+    def get_response_data(self, path, name):
+        response_data = self.response_data.get(path, {})
+        if not response_data:
+            response_data = self.response_data.get(name, {})
+        ctx = self.get_response_data_url_ctx()
+        if ctx:
+            return {k.format(**ctx): v for k,v in response_data.items()}
+        else:
+            return response_data.copy()
 
     def assertResponse(self, path, name=None, method=None, data=None, **kwargs):
         self.login()
@@ -53,9 +66,7 @@ class URLAccessMixin(object):
         response = method(path, data=data)
 
         # Get response specific test data
-        response_data = self.response_data.get(path, {}).copy()
-        if not response_data:
-            response_data = self.response_data.get(name, {}).copy()
+        response_data = self.get_response_data(path, name)
 
         response_attrs = {
             'status_code': kwargs.pop('status_code', self.default_status_code),
@@ -232,9 +243,14 @@ class PrivateProjectAdminAccessTest(PrivateProjectMixin, TestCase):
         '/dashboard/pip/redirects/delete/': {'status_code': 405},
         '/dashboard/pip/subprojects/sub/delete/': {'status_code': 405},
         '/dashboard/pip/integrations/sync/': {'status_code': 405},
-        '/dashboard/pip/integrations/1/sync/': {'status_code': 405},
-        '/dashboard/pip/integrations/1/delete/': {'status_code': 405},
+        '/dashboard/pip/integrations/{pip_id}/sync/': {'status_code': 405},
+        '/dashboard/pip/integrations/{pip_id}/delete/': {'status_code': 405},
     }
+
+    def get_response_data_url_ctx(self):
+        return {
+            'pip_id': self.pip.id
+        }
 
     def login(self):
         return self.client.login(username='owner', password='test')
@@ -261,9 +277,14 @@ class PrivateProjectUserAccessTest(PrivateProjectMixin, TestCase):
         '/dashboard/pip/redirects/delete/': {'status_code': 405},
         '/dashboard/pip/subprojects/sub/delete/': {'status_code': 405},
         '/dashboard/pip/integrations/sync/': {'status_code': 405},
-        '/dashboard/pip/integrations/1/sync/': {'status_code': 405},
-        '/dashboard/pip/integrations/1/delete/': {'status_code': 405},
+        '/dashboard/pip/integrations/{pip_id}/sync/': {'status_code': 405},
+        '/dashboard/pip/integrations/{pip_id}/delete/': {'status_code': 405},
     }
+
+    def get_response_data_url_ctx(self):
+        return {
+            'pip_id': self.pip.id
+        }
 
     # Filtered out by queryset on projects that we don't own.
     default_status_code = 404
