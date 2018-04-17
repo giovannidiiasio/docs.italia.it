@@ -99,6 +99,7 @@ class Publisher(models.Model):
         )
 
 
+@python_2_unicode_compatible
 class PublisherProject(models.Model):
     """
     The PublisherProject is the project that contains documents
