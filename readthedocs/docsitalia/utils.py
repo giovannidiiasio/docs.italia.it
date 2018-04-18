@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+"""Utils for the docsitalia app."""
+
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
@@ -5,6 +8,7 @@ import yaml
 
 
 def load_yaml(txt):
+    """Helper for yaml parsing"""
     try:
         return yaml.safe_load(txt)
     except yaml.YAMLError as exc:

@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+"""Signals for the docsitalia app."""
+
 from __future__ import absolute_import
 
 import logging
@@ -9,11 +12,13 @@ from readthedocs.projects.signals import project_import
 
 from .models import PublisherProject
 
+
 log = logging.getLogger(__name__)
 
 
 @receiver(project_import)
-def on_project_import(sender, **kwargs):
+def on_project_import(sender, **kwargs): # noqa
+    """Connect a Project to its PublisherProject"""
     project = sender
 
     try:

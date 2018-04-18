@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+"""Signals for the docsitalia app."""
+
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
@@ -14,12 +17,14 @@ from .utils import load_yaml
 
 
 # TODO: do the validation :)
-def validate_publisher_metadata(org, settings):
+def validate_publisher_metadata(org, settings): # noqa
+    """Validate the publisher metadata"""
     return load_yaml(settings)
 
 
 # TODO: do the validation :)
 def validate_projects_metadata(org, settings):
+    """Validate the projects metadata"""
     projects = load_yaml(settings)
     for project in projects['projects']:
         project['slug'] = slugify(project['title'])
@@ -46,6 +51,7 @@ class Publisher(models.Model):
     The publisher homepage is handled by a django view with data from the
     metadata field.
     """
+
     # Auto fields
     pub_date = models.DateTimeField(_('Publication date'), auto_now_add=True)
     modified_date = models.DateTimeField(_('Modified date'), auto_now=True)
@@ -78,7 +84,7 @@ class Publisher(models.Model):
     def create_projects_from_metadata(self, org, settings):
         slugs = []
         for project in settings['projects']:
-            proj, created = PublisherProject.objects.get_or_create(
+            proj, _ = PublisherProject.objects.get_or_create(
                 publisher=self,
                 name=project['title'],
                 slug=project['slug'],
@@ -101,6 +107,7 @@ class Publisher(models.Model):
 
 @python_2_unicode_compatible
 class PublisherProject(models.Model):
+
     """
     The PublisherProject is the project that contains documents
 
@@ -109,6 +116,7 @@ class PublisherProject(models.Model):
     The publisher project homepage is handled by a django view with data
     from the metadata field.
     """
+
     # Auto fields
     pub_date = models.DateTimeField(_('Publication date'), auto_now_add=True)
     modified_date = models.DateTimeField(_('Modified date'), auto_now=True)
