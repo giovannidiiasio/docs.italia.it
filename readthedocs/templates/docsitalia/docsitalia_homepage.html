@@ -1,0 +1,34 @@
+{% extends "projects/base_project.html" %}
+{% load i18n %}
+
+{% block content %}
+{% comment %}
+    Home page di docs italia, al momento contiene la lista dei documenti (Project di RTD) più recenti
+{% endcomment %}
+<div>
+    {% for project in object_list %}
+        <div class="project">
+            {% with project.publisherproject_set.all.first as publisher %}
+                <a href="{{ publisher.get_absolute_url }}">{{ publisher }}</a>
+            {% endwith %}
+            {{ project }}
+            {{ project.version }}
+            <a class="" href="{{ project.get_absolute_url }}">{{ project }}</a>
+            {{ project.description|safe }}
+        </div>
+        <hr>
+    {% endfor %}
+</div>
+<div>
+    <h1>Cos'è Docs Italia?</h1>
+    <p>
+    Docs Italia è un servizio a disposizione delle Pubbliche Amministrazioni per pubblicare documenti tecnici e amministrativi, e offre ai cittadini la possibilità di leggere e commentare documenti pubblici ed essere informati sull’andamento dei progetti. Su Docs Italia trovi:
+    </p>
+    <ul>
+        <li>documentazione tecnica relativa ai progetti pubblici</li>
+        <li>Per esempio, su Docs Italia è possibile accedere alla documentazione relativa al progetto per costruire l’Anagrafe nazionale della popolazione residente in Italia</li>
+        <li>documenti amministrativi, circolari, linee guida, regole tecniche, direttive</li>
+        <li>Per esempio, su Docs Italia è disponibile il Codice dell’Amministrazione Digitale, la legge che definisce il ruolo del digitale nella Pubblica Amministrazione</li>
+    </ul>
+</div>
+{% endblock %}

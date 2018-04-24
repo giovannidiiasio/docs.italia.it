@@ -1,0 +1,26 @@
+{% extends "projects/base_project.html" %}
+{% load i18n %}
+
+{% block content %}
+{% comment %}
+Questa è la pagina di dettaglio del publisher
+project con la lista dei progetti (documenti)
+associati
+{% endcomment %}
+<h2>{{ object }}</h2>
+{% trans 'Available documents' %}
+<div>
+    <div>
+        {% for project in object.projects.all %}
+            <div>
+                {{ object }}
+                {{ project }}
+                {{ project.version }}
+                <a class="" href="{{ project.get_absolute_url }}">{{ project }}</a>
+                {{ project.description|safe }}
+            </div>
+            <hr>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

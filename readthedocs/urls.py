@@ -39,6 +39,7 @@ basic_urls = [
 ]
 
 rtd_urls = [
+    url(r'^docsitalia/', include('readthedocs.docsitalia.urls')), # to be moved
     url(r'^bookmarks/', include('readthedocs.bookmarks.urls')),
     url(r'^search/$', search_views.elastic_search, name='search'),
     url(r'^dashboard/', include('readthedocs.projects.urls.private')),

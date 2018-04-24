@@ -1,0 +1,63 @@
+{% extends "projects/base_project.html" %}
+{% load i18n %}
+
+{% block content %}
+{% comment %}
+Pagina di dettaglio del publisher con la lista
+dei publisher projects
+{% endcomment %}
+    <h2>{{ object }} </h2>
+    <button class="js-open-publisher-search">Search</button>
+    {% for pb in object.publisherproject_set.all %}
+        <div>
+            <a href="{{ pb.get_absolute_url }}">{{ pb }}</a>
+        </div>
+    {% endfor %}
+    <div class="publisher-metadata">
+        {% if object.metadata %}
+            {{ object.metadata.name }}
+            <a href="{{ object.metadata.website }}">{{ object.metadata.website }}</a>
+            {{ object.metadata.description }}
+            <img src="{{ object.metadata.assets.logo }}" />
+        {% endif %}
+    </div>
+    <div class="publisher-projects-metadata">
+        {% if object.projects_metada %}
+            {{ object.projects_metadata.title }}
+            {{ object.projects_metadata.description }}
+            {{ object.projects_metadata.website }}
+        {% endif %}
+    </div>
+    <div class="publisher-search" style="display: none">
+    {% comment %}
+    Questo è il popup di ricerca
+    ancora da definire
+    {% endcomment %}
+        <a class="js-publisher-search-close">close</a>
+        {% include "core/widesearchbar.html" %}
+        <strong>Ricerche frequenti</strong>
+        <ul>
+            <li>
+                <a>Tag 1</a>
+            </li>
+            <li>
+                <a>Tag 2</a>
+            </li>
+            <li>
+                <a>Progetto Spid</a>
+            </li>
+        </ul>
+    </div>
+{% endblock %}
+{% block extra_scripts %}
+  <script type="text/javascript">
+    $(document).ready(function() {
+        $('.js-publisher-search-close').on('click', function(){
+            $('.publisher-search').hide();
+        });
+        $('.js-open-publisher-search').on('click', function(){
+            $('.publisher-search').show();
+        });
+    });
+  </script>
+{% endblock %}
