@@ -1,7 +1,6 @@
 from __future__ import absolute_import
 from django.conf.urls import url
 
-from .views.core_views import PublisherIndex, DocsItaliaHomePage, PublisherProjectIndex
 from .views.core_views import DocsItaliaHomePage, PublisherIndex, PublisherProjectIndex
 
 
