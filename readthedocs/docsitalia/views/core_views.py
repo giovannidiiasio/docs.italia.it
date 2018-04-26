@@ -9,7 +9,7 @@ from readthedocs.docsitalia.models import PublisherProject, Publisher
 from readthedocs.projects.models import Project
 
 
-class DocsItaliaHomePage(ListView):
+class DocsItaliaHomePage(ListView): #  pylint: disable=too-many-ancestors
 
     """Docs italia Home Page"""
 
@@ -19,19 +19,19 @@ class DocsItaliaHomePage(ListView):
     def get_queryset(self):
         """get queryset"""
         actives = PublisherProject.objects.filter(active=True)
-        return Project.objects.filter( # this will eventually become most viewed this month
-            publisherproject__in=actives).order_by('-modified_date', '-pub_date'
+        return Project.objects.filter(publisherproject__in=actives).order_by(
+            '-modified_date', '-pub_date'
         )[:24]
 
 
-class PublisherIndex(DetailView):
+class PublisherIndex(DetailView): #  pylint: disable=too-many-ancestors
 
     """Detail view of :py:class:`Publisher` instances."""
 
     model = Publisher
 
 
-class PublisherProjectIndex(DetailView):
+class PublisherProjectIndex(DetailView): #  pylint: disable=too-many-ancestors
 
     """Detail view of :py:class:`PublisherProject` instances."""
 

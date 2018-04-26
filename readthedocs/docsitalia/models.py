@@ -108,6 +108,7 @@ class Publisher(models.Model):
         )
 
     def get_absolute_url(self):
+        """Get absolute url for publisher"""
         return reverse('publisher_detail', args=[self.slug])
 
 
@@ -145,4 +146,5 @@ class PublisherProject(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('publisher_project_detail', args=[self.publisher.slug ,self.slug])
+        """get absolute url for publisher project"""
+        return reverse('publisher_project_detail', args=[self.publisher.slug, self.slug])
