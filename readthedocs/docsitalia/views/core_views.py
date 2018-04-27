@@ -9,7 +9,7 @@ from readthedocs.docsitalia.models import PublisherProject, Publisher
 from readthedocs.projects.models import Project
 
 
-class DocsItaliaHomePage(ListView): #  pylint: disable=too-many-ancestors
+class DocsItaliaHomePage(ListView):  # pylint: disable=too-many-ancestors
 
     """Docs italia Home Page"""
 
@@ -24,14 +24,14 @@ class DocsItaliaHomePage(ListView): #  pylint: disable=too-many-ancestors
         )[:24]
 
 
-class PublisherIndex(DetailView): #  pylint: disable=too-many-ancestors
+class PublisherIndex(DetailView):  # pylint: disable=too-many-ancestors
 
     """Detail view of :py:class:`Publisher` instances."""
 
     model = Publisher
 
 
-class PublisherProjectIndex(DetailView): #  pylint: disable=too-many-ancestors
+class PublisherProjectIndex(DetailView):  # pylint: disable=too-many-ancestors
 
     """Detail view of :py:class:`PublisherProject` instances."""
 

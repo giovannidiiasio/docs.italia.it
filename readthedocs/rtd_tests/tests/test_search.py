@@ -58,7 +58,7 @@ class TestSearch(TestCase):
         self.client.login(username='eric', password='test')
         r = self.client.get(
             reverse('search'),
-            {'q': 'pip', 'type': 'project', 'project': None}
+            {'q': 'pip', 'type': 'project'}
         )
         self.assertEqual(r.status_code, 200)
         response = perform_request_mock.call_args_list[0][0][3]
