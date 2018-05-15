@@ -1,4 +1,6 @@
 from __future__ import absolute_import
+
+from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.http import Http404
 from django.test import TestCase
@@ -8,7 +10,6 @@ from django_dynamic_fixture import get
 from django_dynamic_fixture import fixture
 from mock import patch
 
-from readthedocs.builds.constants import LATEST
 from readthedocs.projects.models import Project
 from readthedocs.redirects.models import Redirect
 
@@ -29,7 +30,7 @@ class RedirectTests(TestCase):
              'project_url': 'http://pip.rtfd.org',
              'repo': 'https://github.com/fail/sauce',
              'csrfmiddlewaretoken': '34af7c8a5ba84b84564403a280d9a9be',
-             'default_version': LATEST,
+             'default_version': settings.LATEST,
              'privacy_level': 'public',
              'version_privacy_level': 'public',
              'description': 'wat',
@@ -119,7 +120,7 @@ class RedirectAppTests(TestCase):
              'project_url': 'http://pip.rtfd.org',
              'repo': 'https://github.com/fail/sauce',
              'csrfmiddlewaretoken': '34af7c8a5ba84b84564403a280d9a9be',
-             'default_version': LATEST,
+             'default_version': settings.LATEST,
              'privacy_level': 'public',
              'version_privacy_level': 'public',
              'description': 'wat',
@@ -237,7 +238,7 @@ class CustomRedirectTests(TestCase):
             'default_branch': '',
             'project_url': 'http://pip.rtfd.org',
             'repo': 'https://github.com/fail/sauce',
-            'default_version': LATEST,
+            'default_version': settings.LATEST,
             'privacy_level': 'public',
             'version_privacy_level': 'public',
             'description': 'wat',

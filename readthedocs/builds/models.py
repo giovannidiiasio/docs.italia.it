@@ -25,8 +25,8 @@ from readthedocs.projects.constants import (
 from readthedocs.projects.models import APIProject, Project
 
 from .constants import (
-    BRANCH, BUILD_STATE, BUILD_STATE_FINISHED, BUILD_TYPES, LATEST,
-    NON_REPOSITORY_VERSIONS, STABLE, TAG, VERSION_TYPES)
+    BRANCH, BUILD_STATE, BUILD_STATE_FINISHED, BUILD_TYPES,
+    TAG, VERSION_TYPES)
 from .managers import VersionManager
 from .querysets import BuildQuerySet, RelatedBuildQuerySet, VersionQuerySet
 from .utils import (
@@ -119,12 +119,12 @@ class Version(models.Model):
         """
         # LATEST is special as it is usually a branch but does not contain the
         # name in verbose_name.
-        if self.slug == LATEST:
+        if self.slug == settings.LATEST:
             if self.project.default_branch:
                 return self.project.default_branch
             return self.project.vcs_repo().fallback_branch
 
-        if self.slug == STABLE:
+        if self.slug == settings.STABLE:
             if self.type == BRANCH:
                 # Special case, as we do not store the original branch name
                 # that the stable version works on. We can only interpolate the
@@ -136,7 +136,7 @@ class Version(models.Model):
             return self.identifier
 
         # By now we must have handled all special versions.
-        assert self.slug not in NON_REPOSITORY_VERSIONS
+        assert self.slug not in settings.NON_REPOSITORY_VERSIONS
 
         if self.type in (BRANCH, TAG):
             # If this version is a branch or a tag, the verbose_name will

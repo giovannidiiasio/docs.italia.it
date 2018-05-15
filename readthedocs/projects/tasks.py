@@ -31,8 +31,7 @@ from .constants import LOG_TEMPLATE
 from .exceptions import RepositoryError
 from .models import ImportedFile, Project, Domain
 from .signals import before_vcs, after_vcs, before_build, after_build
-from readthedocs.builds.constants import (LATEST,
-                                          BUILD_STATE_CLONING,
+from readthedocs.builds.constants import (BUILD_STATE_CLONING,
                                           BUILD_STATE_INSTALLING,
                                           BUILD_STATE_BUILDING,
                                           BUILD_STATE_FINISHED)
@@ -85,7 +84,7 @@ class SyncRepositoryMixin(object):
         else:
             version_data = (api_v2
                             .version(project.slug)
-                            .get(slug=LATEST)['objects'][0])
+                            .get(slug=settings.LATEST)['objects'][0])
         return APIVersion(**version_data)
 
     def sync_repo(self):

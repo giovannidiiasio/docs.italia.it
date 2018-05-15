@@ -13,7 +13,7 @@ from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
 from rest_framework_jsonp.renderers import JSONPRenderer
 
-from readthedocs.builds.constants import LATEST, TAG
+from readthedocs.builds.constants import TAG
 from readthedocs.builds.models import Version
 from readthedocs.projects.models import Project
 from readthedocs.projects.version_handling import (
@@ -44,7 +44,7 @@ def get_version_compare_data(project, base_version=None):
     if highest_version_obj:
         ret_val['url'] = highest_version_obj.get_absolute_url()
         ret_val['slug'] = (highest_version_obj.slug,)
-    if base_version and base_version.slug != LATEST:
+    if base_version and base_version.slug != settings.LATEST:
         try:
             base_version_comparable = parse_version_failsafe(
                 base_version.verbose_name)
@@ -77,7 +77,7 @@ def footer_html(request):
 
     # Hack in a fix for missing version slug deploy that went out a while back
     if version_slug == '':
-        version_slug = LATEST
+        version_slug = settings.LATEST
 
     new_theme = (theme == 'sphinx_rtd_theme')
     using_theme = (theme == 'default')

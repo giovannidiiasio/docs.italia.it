@@ -5,9 +5,10 @@ from __future__ import (
 
 import json
 
+from django.conf import settings
 from django.test import TestCase
 
-from readthedocs.builds.constants import BRANCH, STABLE, TAG
+from readthedocs.builds.constants import BRANCH, TAG
 from readthedocs.builds.models import Version
 from readthedocs.projects.models import Project
 
@@ -187,14 +188,14 @@ class TestStableVersion(TestCase):
         self.assertRaises(
             Version.DoesNotExist,
             Version.objects.get,
-            slug=STABLE,
+            slug=settings.STABLE,
         )
         self.client.post(
             '/api/v2/project/{}/sync_versions/'.format(self.pip.pk),
             data=json.dumps(version_post_data),
             content_type='application/json',
         )
-        version_stable = Version.objects.get(slug=STABLE)
+        version_stable = Version.objects.get(slug=settings.STABLE)
         self.assertTrue(version_stable.active)
         self.assertEqual(version_stable.identifier, '0.9')
 
@@ -215,7 +216,7 @@ class TestStableVersion(TestCase):
             data=json.dumps(version_post_data),
             content_type='application/json',
         )
-        version_stable = Version.objects.get(slug=STABLE)
+        version_stable = Version.objects.get(slug=settings.STABLE)
         self.assertTrue(version_stable.active)
         self.assertEqual(version_stable.identifier, '0.9')
 
@@ -233,7 +234,7 @@ class TestStableVersion(TestCase):
             data=json.dumps(version_post_data),
             content_type='application/json',
         )
-        version_stable = Version.objects.get(slug=STABLE)
+        version_stable = Version.objects.get(slug=settings.STABLE)
         self.assertTrue(version_stable.active)
         self.assertEqual(version_stable.identifier, '1.0.post1')
 
@@ -255,7 +256,7 @@ class TestStableVersion(TestCase):
             data=json.dumps(version_post_data),
             content_type='application/json',
         )
-        self.assertFalse(Version.objects.filter(slug=STABLE).exists())
+        self.assertFalse(Version.objects.filter(slug=settings.STABLE).exists())
 
         version_post_data = {
             'branches': [],
@@ -276,7 +277,7 @@ class TestStableVersion(TestCase):
             data=json.dumps(version_post_data),
             content_type='application/json',
         )
-        version_stable = Version.objects.get(slug=STABLE)
+        version_stable = Version.objects.get(slug=settings.STABLE)
         self.assertTrue(version_stable.active)
         self.assertEqual(version_stable.identifier, '1.0')
 
@@ -306,7 +307,7 @@ class TestStableVersion(TestCase):
             content_type='application/json',
         )
 
-        version_stable = Version.objects.get(slug=STABLE)
+        version_stable = Version.objects.get(slug=settings.STABLE)
         self.assertTrue(version_stable.active)
         self.assertEqual(version_stable.identifier, '0.9')
 
@@ -325,7 +326,7 @@ class TestStableVersion(TestCase):
             content_type='application/json',
         )
 
-        version_stable = Version.objects.get(slug=STABLE)
+        version_stable = Version.objects.get(slug=settings.STABLE)
         self.assertTrue(version_stable.active)
         self.assertEqual(version_stable.identifier, '1.0.0')
 
@@ -344,7 +345,7 @@ class TestStableVersion(TestCase):
             content_type='application/json',
         )
 
-        version_stable = Version.objects.get(slug=STABLE)
+        version_stable = Version.objects.get(slug=settings.STABLE)
         self.assertTrue(version_stable.active)
         self.assertEqual(version_stable.identifier, '1.0.0')
 
@@ -370,7 +371,7 @@ class TestStableVersion(TestCase):
             content_type='application/json',
         )
 
-        version_stable = Version.objects.get(slug=STABLE)
+        version_stable = Version.objects.get(slug=settings.STABLE)
         self.assertEqual(version_stable.identifier, '0.9')
         version_stable.active = False
         version_stable.save()
@@ -386,7 +387,7 @@ class TestStableVersion(TestCase):
             content_type='application/json',
         )
 
-        version_stable = Version.objects.get(slug=STABLE)
+        version_stable = Version.objects.get(slug=settings.STABLE)
         self.assertFalse(version_stable.active)
         self.assertEqual(version_stable.identifier, '0.9')
 
@@ -411,7 +412,7 @@ class TestStableVersion(TestCase):
 
         # If there is a branch with a higher version, tags takes preferences
         # over the branches to select the stable version
-        version_stable = Version.objects.get(slug=STABLE)
+        version_stable = Version.objects.get(slug=settings.STABLE)
         self.assertTrue(version_stable.active)
         self.assertEqual(version_stable.identifier, '0.9')
 
@@ -426,7 +427,7 @@ class TestStableVersion(TestCase):
             content_type='application/json',
         )
 
-        version_stable = Version.objects.get(slug=STABLE)
+        version_stable = Version.objects.get(slug=settings.STABLE)
         self.assertTrue(version_stable.active)
         self.assertEqual(version_stable.identifier, '1.0')
 
@@ -449,7 +450,7 @@ class TestStableVersion(TestCase):
             content_type='application/json',
         )
 
-        version_stable = Version.objects.get(slug=STABLE)
+        version_stable = Version.objects.get(slug=settings.STABLE)
         self.assertTrue(version_stable.active)
         self.assertEqual(version_stable.identifier, '1.0')
         self.assertEqual(version_stable.type, 'tag')

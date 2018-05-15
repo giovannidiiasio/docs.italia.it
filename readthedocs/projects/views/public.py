@@ -24,7 +24,6 @@ from django.views.decorators.cache import never_cache
 from django.views.generic import DetailView, ListView
 from taggit.models import Tag
 
-from readthedocs.builds.constants import LATEST
 from readthedocs.builds.models import Version
 from readthedocs.builds.views import BuildTriggerMixin
 from readthedocs.projects.models import ImportedFile, Project
@@ -113,7 +112,7 @@ class ProjectDetailView(BuildTriggerMixin, ProjectOnboardMixin, DetailView):
 def project_badge(request, project_slug):
     """Return a sweet badge for the project."""
     badge_path = 'projects/badges/%s.svg'
-    version_slug = request.GET.get('version', LATEST)
+    version_slug = request.GET.get('version', settings.LATEST)
     try:
         version = Version.objects.public(request.user).get(
             project__slug=project_slug, slug=version_slug)
@@ -279,7 +278,7 @@ def elastic_project_search(request, project_slug):
     """Use elastic search to search in a project."""
     queryset = Project.objects.protected(request.user)
     project = get_object_or_404(queryset, slug=project_slug)
-    version_slug = request.GET.get('version', LATEST)
+    version_slug = request.GET.get('version', settings.LATEST)
     query = request.GET.get('q', None)
     if query:
         user = ''
@@ -438,7 +437,7 @@ def project_embed(request, project_slug):
     """Have a content API placeholder."""
     project = get_object_or_404(
         Project.objects.protected(request.user), slug=project_slug)
-    version = project.versions.get(slug=LATEST)
+    version = project.versions.get(slug=settings.LATEST)
     files = version.imported_files.filter(name__endswith='.html').order_by('path')
 
     return render(

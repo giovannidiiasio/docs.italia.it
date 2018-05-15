@@ -37,16 +37,3 @@ VERSION_TYPES = (
     (TAG, _('Tag')),
     (UNKNOWN, _('Unknown')),
 )
-
-LATEST = 'latest'
-LATEST_VERBOSE_NAME = 'latest'
-
-STABLE = 'stable'
-STABLE_VERBOSE_NAME = 'stable'
-
-# Those names are specialcased version names. They do not correspond to
-# branches/tags in a project's repository.
-NON_REPOSITORY_VERSIONS = (
-    LATEST,
-    STABLE,
-)

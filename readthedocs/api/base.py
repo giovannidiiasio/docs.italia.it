@@ -7,6 +7,7 @@ import logging
 from builtins import object
 
 import redis
+from django.conf import settings
 from django.conf.urls import url
 from django.contrib.auth.models import User
 from django.core.cache import cache
@@ -18,7 +19,6 @@ from tastypie.http import HttpCreated
 from tastypie.resources import ModelResource
 from tastypie.utils import dict_strip_unicode_keys, trailing_slash
 
-from readthedocs.builds.constants import LATEST
 from readthedocs.builds.models import Version
 from readthedocs.core.utils import trigger_build
 from readthedocs.projects.models import ImportedFile, Project
@@ -116,7 +116,7 @@ class VersionResource(ModelResource):
 
     def build_version(self, request, **kwargs):
         project = get_object_or_404(Project, slug=kwargs['project_slug'])
-        version = kwargs.get('version_slug', LATEST)
+        version = kwargs.get('version_slug', settings.LATEST)
         version_obj = project.versions.get(slug=version)
         trigger_build(project=project, version=version_obj)
         return self.create_response(request, {'building': True})

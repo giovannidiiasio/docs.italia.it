@@ -10,7 +10,6 @@ from pprint import pprint
 from django.conf import settings
 from django.shortcuts import render
 
-from readthedocs.builds.constants import LATEST
 from readthedocs.search import lib as search_lib
 
 log = logging.getLogger(__name__)
@@ -35,7 +34,7 @@ def elastic_search(request):
         query=request.GET.get('q'),
         type=request.GET.get('type', 'project'),
         project=request.GET.get('project'),
-        version=request.GET.get('version', LATEST),
+        version=request.GET.get('version', settings.LATEST),
         taxonomy=request.GET.get('taxonomy'),
         language=request.GET.get('language'),
     )

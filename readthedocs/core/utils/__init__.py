@@ -16,7 +16,6 @@ from django.utils.text import slugify as slugify_base
 from future.backports.urllib.parse import urlparse
 from celery import group, chord
 
-from readthedocs.builds.constants import LATEST
 from readthedocs.doc_builder.constants import DOCKER_LIMITS
 
 
@@ -90,7 +89,7 @@ def trigger_build(project, version=None, record=True, force=False, basic=False):
         return None
 
     if not version:
-        version = project.versions.get(slug=LATEST)
+        version = project.versions.get(slug=settings.LATEST)
 
     kwargs = dict(
         pk=project.pk,

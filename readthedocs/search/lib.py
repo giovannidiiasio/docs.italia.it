@@ -7,7 +7,6 @@ from django.conf import settings
 
 from .indexes import PageIndex, ProjectIndex, SectionIndex
 
-from readthedocs.builds.constants import LATEST
 from readthedocs.projects.models import Project
 from readthedocs.search.signals import (before_project_search,
                                         before_file_search,
@@ -49,7 +48,7 @@ def search_project(request, query, language=None):
     return ProjectIndex().search(body)
 
 
-def search_file(request, query, project_slug=None, version_slug=LATEST, taxonomy=None):
+def search_file(request, query, project_slug=None, version_slug=settings.LATEST, taxonomy=None):
     """
     Search index for files matching query.
 
@@ -162,7 +161,7 @@ def search_file(request, query, project_slug=None, version_slug=LATEST, taxonomy
     return PageIndex().search(body, **kwargs)
 
 
-def search_section(request, query, project_slug=None, version_slug=LATEST,
+def search_section(request, query, project_slug=None, version_slug=settings.LATEST,
                    path=None):
     """
     Search for a section of content.

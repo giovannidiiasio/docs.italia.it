@@ -8,10 +8,10 @@ from builtins import object, range
 from collections import defaultdict
 
 import six
+from django.conf import settings
 from packaging.version import InvalidVersion, Version
 
-from readthedocs.builds.constants import (
-    LATEST_VERBOSE_NAME, STABLE_VERBOSE_NAME, TAG)
+from readthedocs.builds.constants import TAG
 
 
 def get_major(version):
@@ -167,9 +167,9 @@ def comparable_version(version_string):
     """
     comparable = parse_version_failsafe(version_string)
     if not comparable:
-        if version_string == LATEST_VERBOSE_NAME:
+        if version_string == settings.LATEST_VERBOSE_NAME:
             comparable = Version('99999.0')
-        elif version_string == STABLE_VERBOSE_NAME:
+        elif version_string == settings.STABLE_VERBOSE_NAME:
             comparable = Version('9999.0')
         else:
             comparable = Version('0.01')

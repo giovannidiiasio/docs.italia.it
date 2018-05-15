@@ -14,7 +14,6 @@ from django.core.cache import cache
 from django.shortcuts import get_object_or_404
 
 from readthedocs.core.utils import clean_url, cname_to_slug
-from readthedocs.builds.constants import LATEST
 from readthedocs.builds.models import Version
 from readthedocs.projects.models import Project
 from readthedocs.core.templatetags.core_tags import make_document_url
@@ -60,7 +59,7 @@ def docurl(request):
 
     """
     project = request.GET.get('project')
-    version = request.GET.get('version', LATEST)
+    version = request.GET.get('version', settings.LATEST)
     doc = request.GET.get('doc', 'index')
     if project is None:
         return Response({'error': 'Need project and doc'}, status=status.HTTP_400_BAD_REQUEST)
@@ -97,7 +96,7 @@ def embed(request):
     # Current Request
     """
     project = request.GET.get('project')
-    version = request.GET.get('version', LATEST)
+    version = request.GET.get('version', settings.LATEST)
     doc = request.GET.get('doc')
     section = request.GET.get('section')
 

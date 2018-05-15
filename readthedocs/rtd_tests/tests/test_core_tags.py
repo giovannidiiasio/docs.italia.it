@@ -1,11 +1,11 @@
 from __future__ import absolute_import
 import mock
 
+from django.conf import settings
 from django.test import TestCase
 from django.test.utils import override_settings
 
 from readthedocs.projects.models import Project
-from readthedocs.builds.constants import LATEST
 from readthedocs.core.templatetags import core_tags
 
 
@@ -160,25 +160,25 @@ class CoreTagsTests(TestCase):
     def test_mkdocs(self):
         proj = Project.objects.get(slug='pip')
         proj.documentation_type = 'mkdocs'
-        url = core_tags.make_document_url(proj, LATEST, 'document')
+        url = core_tags.make_document_url(proj, settings.LATEST, 'document')
         self.assertEqual(url, 'http://readthedocs.org/docs/pip/en/latest/document/')
 
     def test_mkdocs_no_directory_urls(self):
         proj = Project.objects.get(slug='pip')
         proj.documentation_type = 'mkdocs'
-        url = core_tags.make_document_url(proj, LATEST, 'document.html')
+        url = core_tags.make_document_url(proj, settings.LATEST, 'document.html')
         self.assertEqual(url, 'http://readthedocs.org/docs/pip/en/latest/document.html')
 
     def test_mkdocs_index(self):
         proj = Project.objects.get(slug='pip')
         proj.documentation_type = 'mkdocs'
-        url = core_tags.make_document_url(proj, LATEST, 'index')
+        url = core_tags.make_document_url(proj, settings.LATEST, 'index')
         self.assertEqual(url, 'http://readthedocs.org/docs/pip/en/latest/')
 
     def test_mkdocs_index_no_directory_urls(self):
         proj = Project.objects.get(slug='pip')
         proj.documentation_type = 'mkdocs'
-        url = core_tags.make_document_url(proj, LATEST, 'index.html')
+        url = core_tags.make_document_url(proj, settings.LATEST, 'index.html')
         self.assertEqual(url, 'http://readthedocs.org/docs/pip/en/latest/')
 
     def test_restructured_text(self):

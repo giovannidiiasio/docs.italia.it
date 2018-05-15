@@ -4,12 +4,12 @@ from __future__ import absolute_import
 import json
 import re
 
+from django.conf import settings
 from django.http import HttpResponse, HttpResponseNotFound
 from django.shortcuts import redirect
 from django.views.decorators.csrf import csrf_exempt
 
 from readthedocs.core.utils import trigger_build
-from readthedocs.builds.constants import LATEST
 from readthedocs.projects import constants
 from readthedocs.projects.models import Project, Feature
 from readthedocs.projects.tasks import SyncRepositoryTask
@@ -41,7 +41,7 @@ def _build_version(project, slug, already_built=()):
         # short circuit versions that are default
         # these will build at "latest", and thus won't be
         # active
-        latest_version = project.versions.get(slug=LATEST)
+        latest_version = project.versions.get(slug=settings.LATEST)
         trigger_build(project=project, version=latest_version, force=True)
         log.info("(Version build) Building %s:%s",
                  project.slug, latest_version.slug)
@@ -51,7 +51,7 @@ def _build_version(project, slug, already_built=()):
             trigger_build(project=project, version=slug_version, force=True)
             log.info("(Version build) Building %s:%s",
                      project.slug, slug_version.slug)
-        return LATEST
+        return settings.LATEST
     elif project.versions.exclude(active=True).filter(slug=slug).exists():
         log.info("(Version build) Not Building %s", slug)
         return None
@@ -124,7 +124,7 @@ def _build_url(url, projects, branches):
         (built, not_building) = build_branches(project, branches)
         if not built:
             # Call SyncRepositoryTask to update tag/branch info
-            version = project.versions.get(slug=LATEST)
+            version = project.versions.get(slug=settings.LATEST)
             sync_repository = SyncRepositoryTask()
             sync_repository.apply_async(
                 args=(version.pk,),

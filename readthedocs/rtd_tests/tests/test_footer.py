@@ -3,10 +3,11 @@ from __future__ import (
     absolute_import, division, print_function, unicode_literals)
 
 import mock
+from django.conf import settings
 from django.test import TestCase
 from rest_framework.test import APIRequestFactory, APITestCase
 
-from readthedocs.builds.constants import BRANCH, LATEST, TAG
+from readthedocs.builds.constants import BRANCH, TAG
 from readthedocs.builds.models import Version
 from readthedocs.core.middleware import FooterNoSessionMiddleware
 from readthedocs.projects.models import Project
@@ -125,7 +126,7 @@ class TestVersionCompareFooter(TestCase):
 
     def test_highest_version_from_latest(self):
         Version.objects.create_latest(project=self.pip)
-        base_version = self.pip.versions.get(slug=LATEST)
+        base_version = self.pip.versions.get(slug=settings.LATEST)
         valid_data = {
             'project': 'Version 0.8.1 of Pip (19)',
             'url': '/dashboard/pip/version/0.8.1/',

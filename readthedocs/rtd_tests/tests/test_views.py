@@ -1,4 +1,6 @@
 from __future__ import absolute_import
+
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.test import TestCase
@@ -6,7 +8,6 @@ from django.utils.six.moves.urllib.parse import urlsplit
 from django_dynamic_fixture import get
 from django_dynamic_fixture import new
 
-from readthedocs.builds.constants import LATEST
 from readthedocs.core.permissions import AdminPermission
 from readthedocs.projects.models import ImportedFile
 from readthedocs.projects.models import Project
@@ -35,7 +36,7 @@ class Testmaker(TestCase):
             'language': 'en',
             'default_branch': '',
             'project_url': 'http://django-kong.rtfd.org',
-            'default_version': LATEST,
+            'default_version': settings.LATEST,
             'privacy_level': 'public',
             'version_privacy_level': 'public',
             'python_interpreter': 'python',

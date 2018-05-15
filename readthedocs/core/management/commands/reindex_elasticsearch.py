@@ -8,7 +8,6 @@ from django.core.management.base import BaseCommand
 from django.core.management.base import CommandError
 from django.conf import settings
 
-from readthedocs.builds.constants import LATEST
 from readthedocs.builds.models import Version
 from readthedocs.projects.tasks import update_search
 
@@ -38,7 +37,7 @@ class Command(BaseCommand):
                     'No project with slug: {slug}'.format(slug=project))
             log.info("Building all versions for %s", project)
         elif getattr(settings, 'INDEX_ONLY_LATEST', True):
-            queryset = queryset.filter(slug=LATEST)
+            queryset = queryset.filter(slug=settings.LATEST)
 
         for version in queryset:
             log.info("Reindexing %s", version)

@@ -5,14 +5,16 @@ from __future__ import (
 import datetime
 import json
 
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.test import TestCase
+from django.test.utils import override_settings
 from django_dynamic_fixture import get
 from mock import patch
 from rest_framework.reverse import reverse
 
 from readthedocs.builds.constants import (
-    BUILD_STATE_CLONING, BUILD_STATE_FINISHED, BUILD_STATE_TRIGGERED, LATEST)
+    BUILD_STATE_CLONING, BUILD_STATE_FINISHED, BUILD_STATE_TRIGGERED)
 from readthedocs.builds.models import Build
 from readthedocs.projects.exceptions import ProjectConfigurationError
 from readthedocs.projects.models import Project
@@ -267,32 +269,32 @@ class TestProject(TestCase):
     def test_has_pdf(self):
         # The project has a pdf if the PDF file exists on disk.
         with fake_paths_by_regex('\.pdf$'):
-            self.assertTrue(self.pip.has_pdf(LATEST))
+            self.assertTrue(self.pip.has_pdf(settings.LATEST))
 
         # The project has no pdf if there is no file on disk.
         with fake_paths_by_regex('\.pdf$', exists=False):
-            self.assertFalse(self.pip.has_pdf(LATEST))
+            self.assertFalse(self.pip.has_pdf(settings.LATEST))
 
     def test_has_pdf_with_pdf_build_disabled(self):
         # The project has NO pdf if pdf builds are disabled
         self.pip.enable_pdf_build = False
         with fake_paths_by_regex('\.pdf$'):
-            self.assertFalse(self.pip.has_pdf(LATEST))
+            self.assertFalse(self.pip.has_pdf(settings.LATEST))
 
     def test_has_epub(self):
         # The project has a epub if the PDF file exists on disk.
         with fake_paths_by_regex('\.epub$'):
-            self.assertTrue(self.pip.has_epub(LATEST))
+            self.assertTrue(self.pip.has_epub(settings.LATEST))
 
         # The project has no epub if there is no file on disk.
         with fake_paths_by_regex('\.epub$', exists=False):
-            self.assertFalse(self.pip.has_epub(LATEST))
+            self.assertFalse(self.pip.has_epub(settings.LATEST))
 
     def test_has_epub_with_epub_build_disabled(self):
         # The project has NO epub if epub builds are disabled
         self.pip.enable_epub_build = False
         with fake_paths_by_regex('\.epub$'):
-            self.assertFalse(self.pip.has_epub(LATEST))
+            self.assertFalse(self.pip.has_epub(settings.LATEST))
 
     @patch('readthedocs.projects.models.Project.find')
     def test_conf_file_found(self, find_method):
@@ -396,3 +398,10 @@ class TestFinishInactiveBuildsTask(TestCase):
         self.assertTrue(self.build_3.success)
         self.assertEqual(self.build_3.error, '')
         self.assertEqual(self.build_3.state, BUILD_STATE_TRIGGERED)
+
+
+class TestOverrideVersionInSettings(TestCase):
+    def test_can_override_default_version_from_settings(self):
+        with override_settings(LATEST='previous'):
+            pip = get(Project, slug='pip', single_version=True, main_language_project=None)
+            self.assertEqual('previous', pip.get_default_version())

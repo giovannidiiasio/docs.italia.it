@@ -3,11 +3,12 @@
 from __future__ import absolute_import
 import logging
 
+from django.conf import settings
+
 from rest_framework import decorators, permissions, status
 from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
 
-from readthedocs.builds.constants import LATEST
 from readthedocs.builds.models import Version
 from readthedocs.projects.models import Project, ProjectRelationship
 from readthedocs.search.lib import search_file, search_project, search_section
@@ -43,7 +44,7 @@ def index_search(request):
 def search(request):
     """Perform search, supplement links by resolving project domains."""
     project_slug = request.GET.get('project', None)
-    version_slug = request.GET.get('version', LATEST)
+    version_slug = request.GET.get('version', settings.LATEST)
     query = request.GET.get('q', None)
     if project_slug is None or query is None:
         return Response({'error': 'Need project and q'},
@@ -137,7 +138,7 @@ def section_search(request):
             {'error': 'Search term required. Use the "q" GET arg to search. '},
             status=status.HTTP_400_BAD_REQUEST)
     project_slug = request.GET.get('project', None)
-    version_slug = request.GET.get('version', LATEST)
+    version_slug = request.GET.get('version', settings.LATEST)
     path = request.GET.get('path', None)
     log.debug("(API Section Search) [%s:%s] %s", project_slug, version_slug,
               query)

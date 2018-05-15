@@ -4,11 +4,12 @@ import shutil
 from os.path import exists
 from tempfile import mkdtemp
 
+from django.conf import settings
 from django.contrib.auth.models import User
 from django_dynamic_fixture import get
 from mock import patch, MagicMock
 
-from readthedocs.builds.constants import BUILD_STATE_INSTALLING, BUILD_STATE_FINISHED, LATEST
+from readthedocs.builds.constants import BUILD_STATE_INSTALLING, BUILD_STATE_FINISHED
 from readthedocs.builds.models import Build
 from readthedocs.projects.models import Project
 from readthedocs.projects import tasks
@@ -116,7 +117,7 @@ class TestCeleryBuilding(RTDTestCase):
         self.assertTrue(result.successful())
 
     def test_sync_repository(self):
-        version = self.project.versions.get(slug=LATEST)
+        version = self.project.versions.get(slug=settings.LATEST)
         with mock_api(self.repo):
             sync_repository = tasks.SyncRepositoryTask()
             result = sync_repository.apply_async(

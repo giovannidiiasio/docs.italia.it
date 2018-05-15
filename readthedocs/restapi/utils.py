@@ -7,9 +7,9 @@ from __future__ import (
 import hashlib
 import logging
 
+from django.conf import settings
 from rest_framework.pagination import PageNumberPagination
 
-from readthedocs.builds.constants import NON_REPOSITORY_VERSIONS
 from readthedocs.builds.models import Version
 from readthedocs.search.indexes import PageIndex, ProjectIndex, SectionIndex
 
@@ -74,7 +74,7 @@ def delete_versions(project, version_data):
     to_delete_qs = to_delete_qs.exclude(identifier__in=current_versions)
     to_delete_qs = to_delete_qs.exclude(uploaded=True)
     to_delete_qs = to_delete_qs.exclude(active=True)
-    to_delete_qs = to_delete_qs.exclude(slug__in=NON_REPOSITORY_VERSIONS)
+    to_delete_qs = to_delete_qs.exclude(slug__in=settings.NON_REPOSITORY_VERSIONS)
 
     if to_delete_qs.count():
         ret_val = {obj.slug for obj in to_delete_qs}

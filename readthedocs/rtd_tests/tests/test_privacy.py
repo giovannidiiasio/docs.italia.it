@@ -3,11 +3,11 @@ import logging
 import json
 import mock
 
+from django.conf import settings
 from django.test import TestCase
 from django.test.utils import override_settings
 from django.contrib.auth.models import User
 
-from readthedocs.builds.constants import LATEST
 from readthedocs.builds.models import Version, Build
 from readthedocs.projects.models import Project
 from readthedocs.projects.forms import UpdateProjectForm
@@ -45,7 +45,7 @@ class PrivacyTests(TestCase):
                   'language': 'en',
                   'default_branch': '',
                   'project_url': 'http://django-kong.rtfd.org',
-                  'default_version': LATEST,
+                  'default_version': settings.LATEST,
                   'python_interpreter': 'python',
                   'description': 'OOHHH AH AH AH KONG SMASH',
                   'documentation_type': 'sphinx'},

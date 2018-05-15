@@ -2,10 +2,10 @@
 
 from __future__ import absolute_import
 
+from django.conf import settings
 from django.db import models
 
-from .constants import (BRANCH, TAG, LATEST, LATEST_VERBOSE_NAME, STABLE,
-                        STABLE_VERBOSE_NAME)
+from .constants import BRANCH, TAG
 from .querysets import VersionQuerySet
 from readthedocs.core.utils.extend import (SettingsOverrideObject,
                                            get_override_class)
@@ -36,11 +36,11 @@ class VersionManagerBase(models.Manager):
 
     def create_stable(self, **kwargs):
         defaults = {
-            'slug': STABLE,
-            'verbose_name': STABLE_VERBOSE_NAME,
+            'slug': settings.STABLE,
+            'verbose_name': settings.STABLE_VERBOSE_NAME,
             'machine': True,
             'active': True,
-            'identifier': STABLE,
+            'identifier': settings.STABLE,
             'type': TAG,
         }
         defaults.update(kwargs)
@@ -48,11 +48,11 @@ class VersionManagerBase(models.Manager):
 
     def create_latest(self, **kwargs):
         defaults = {
-            'slug': LATEST,
-            'verbose_name': LATEST_VERBOSE_NAME,
+            'slug': settings.LATEST,
+            'verbose_name': settings.LATEST_VERBOSE_NAME,
             'machine': True,
             'active': True,
-            'identifier': LATEST,
+            'identifier': settings.LATEST,
             'type': BRANCH,
         }
         defaults.update(kwargs)

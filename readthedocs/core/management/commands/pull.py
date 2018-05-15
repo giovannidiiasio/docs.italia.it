@@ -3,9 +3,9 @@
 from __future__ import absolute_import
 import logging
 
+from django.conf import settings
 from django.core.management.base import BaseCommand
 
-from readthedocs.builds.constants import LATEST
 from readthedocs.projects import tasks, utils
 
 
@@ -19,7 +19,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         if args:
             for slug in args:
-                version = utils.version_from_slug(slug, LATEST)
+                version = utils.version_from_slug(slug, settings.LATEST)
                 tasks.SyncRepositoryTask().run(
                     version.pk,
                 )
